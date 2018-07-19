@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hycxkj.user.mapper.UserFansMapper">
+  <resultMap id="BaseResultMap" type="com.hycxkj.user.bean.UserFans">
+    <result column="fans_id" jdbcType="BIGINT" property="fansId" />
+    <result column="focus_id" jdbcType="BIGINT" property="focusId" />
+    <result column="be_focus_id" jdbcType="BIGINT" property="beFocusId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fans_id, focus_id, be_focus_id, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.hycxkj.user.bean.UserFansExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_fans
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.hycxkj.user.bean.UserFansExample">
+    delete from user_fans
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hycxkj.user.bean.UserFans">
+    insert into user_fans (fans_id, focus_id, be_focus_id,
+      create_time)
+    values (#{fansId,jdbcType=BIGINT}, #{focusId,jdbcType=BIGINT}, #{beFocusId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hycxkj.user.bean.UserFans">
+    insert into user_fans
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fansId != null">
+        fans_id,
+      </if>
+      <if test="focusId != null">
+        focus_id,
+      </if>
+      <if test="beFocusId != null">
+        be_focus_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fansId != null">
+        #{fansId,jdbcType=BIGINT},
+      </if>
+      <if test="focusId != null">
+        #{focusId,jdbcType=BIGINT},
+      </if>
+      <if test="beFocusId != null">
+        #{beFocusId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hycxkj.user.bean.UserFansExample" resultType="java.lang.Long">
+    select count(*) from user_fans
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_fans
+    <set>
+      <if test="record.fansId != null">
+        fans_id = #{record.fansId,jdbcType=BIGINT},
+      </if>
+      <if test="record.focusId != null">
+        focus_id = #{record.focusId,jdbcType=BIGINT},
+      </if>
+      <if test="record.beFocusId != null">
+        be_focus_id = #{record.beFocusId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_fans
+    set fans_id = #{record.fansId,jdbcType=BIGINT},
+      focus_id = #{record.focusId,jdbcType=BIGINT},
+      be_focus_id = #{record.beFocusId,jdbcType=BIGINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <select id="getFansCount" resultType="Long">
+    SELECT COUNT(*) FROM user_fans WHERE be_focus_id = #{userId}
+  </select>
+
+  <select id="getFocusCount" resultType="Long">
+    SELECT  COUNT(*) FROM  user_fans WHERE focus_id = #{focusId}
+  </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

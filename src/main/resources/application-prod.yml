@@ -1,0 +1,93 @@
+
+server:
+  port: 80
+  context-path: /
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://#/diy?serverTimezone=Asia/Shanghai&characterEncoding=utf-8&useSSL=true
+    username: #
+    password: #
+    type: com.alibaba.druid.pool.DruidDataSource
+    maxActive: 30
+    initialSize: 3
+    minIdle: 3
+    maxWait: 60000
+    filters: stat,wall  #配置 druid 监控
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 1分钟
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒，5分钟
+    minEvictableIdleTimeMillis: 300000
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+  # springBoot 默认配置 jedis  StringRedisTemplate  RedisTemplate , 如果redis 可以 默认配置RedisCacheManager
+  # redis 默认使用 序列化机制，也就是如果要存储对象，那么这个对象必须实现serializable 接口。
+  # 可通过 enableDefaultSerializer 设置为false， 使用 byte 来处理
+  redis:
+    host: #
+    port: #
+    password: #
+    timeout: 60000 #毫秒为单位
+    pool:
+      # 池中“空闲”连接的最大数量。使用负值表示无限数量的空闲连接。
+      max-idle: 8
+      # 在池中保持最少空闲连接数的目标。这个设置只有在它是正数时才有效果。
+      min-idle: 3
+      # 可在给定时间内由池分配的最大连接数。没有限制地使用负值。
+      max-active: 8
+      # 最大时间(以毫秒为单位)的连接分配应该阻塞，然后在池耗尽时抛出异常。使用一个负值无限期地阻塞。
+      max-wait: 60000 #毫秒为单位
+  resources:
+    #配置静态路径，多个可用逗号隔开
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${upload.image.path},file:${upload.banner.path},file:${upload.video.path}
+  data:
+    mongodb:
+      uri: mongodb://user:diy-root:#,#/diy
+#      username: diy-root
+#      password: a792966514
+#      port: 27777
+#      host: 101.132.71.33
+#      database: diy
+mybatis:
+  mapper-locations:
+    - classpath:mybatis/mapper/other/*.xml
+    - classpath:mybatis/mapper/shop/*.xml
+    - classpath:mybatis/mapper/upms/*.xml
+    - classpath:mybatis/mapper/user/*.xml
+    - classpath:mybatis/mapper/production/*.xml
+    - classpath:mybatis/mapper/common/*.xml
+    - classpath:mybatis/mapper/websocket/*.xml
+    - classpath:mybatis/mapper/recommend/*.xml
+    - classpath:mybatis/mapper/order/*.xml
+    - classpath:mybatis/mapper/postage/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+pagehelper:
+  dialect: com.github.pagehelper.dialect.helper.MySqlDialect
+#logging:
+#  config: classpath:logback-spring.xml
+#  file: /var/diy/log.txt
+#  #file: G:/error.txt
+#  level:
+#  # 根据包进行打印
+#    root: info
+#    org.springframework.web: debug
+#    org.apache.ibatis: debug  # 打印sql
+#    com.hycxkj: info
+
+jwt:
+  token:
+    secret: diySecret
+    expiration: 604800 # 7天 这边是秒单位的，在代码里* 1000了
+
+swagger:
+  host: #
+
+md5:
+  iterator: 1

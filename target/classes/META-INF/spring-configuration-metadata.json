@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.hycxkj.production.log.MongoBean",
+      "name": "spring.data.mongodb",
+      "type": "com.hycxkj.production.log.MongoBean"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.hycxkj.production.log.MongoBean",
+      "name": "spring.data.mongodb.uri",
+      "type": "java.lang.String"
+    }
+  ]
+}

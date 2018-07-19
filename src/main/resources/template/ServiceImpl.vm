@@ -1,0 +1,95 @@
+package ${packageName}.${module}.service.impl;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import ${packageName}.${module}.bean.${modelClass};
+import ${packageName}.${module}.bean.${modelClass}Example;
+import ${packageName}.${module}.mapper.${modelClass}Mapper;
+import ${packageName}.${module}.service.${modelClass}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.collections.CollectionUtils;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+/**
+* @author 陈少平
+* @description
+* @create in ${createTime}
+*/
+@Service
+public class ${modelClass}ServiceImpl implements ${modelClass}Service {
+
+    @Autowired
+    private ${modelClass}Mapper ${modelName}Mapper;
+
+    @Override
+    @Transactional
+    public int insert(${modelClass} model) {
+        return ${modelName}Mapper.insert(model);
+    }
+
+    @Override
+    @Transactional
+    public int insertSelective(${modelClass} model){
+        return ${modelName}Mapper.insertSelective(model);
+    }
+
+    @Override
+    public PageInfo<${modelClass}> getByPage(Integer pageNum, Integer pageSize) {
+        ${modelClass}Example ${modelName}Example = new ${modelClass}Example();
+        ${modelClass}Example.Criteria criteria = ${modelName}Example.createCriteria();
+        criteria.getAllCriteria();
+        return getPagesByExample(pageNum, pageSize, ${modelName}Example);
+    }
+
+    @Override
+    public PageInfo<${modelClass}> getPagesByExample(Integer pageNum, Integer pageSize, ${modelClass}Example example){
+        PageHelper.startPage(pageNum,pageSize);
+        List<${modelClass}> list = ${modelName}Mapper.selectByExample(example);
+        PageInfo<${modelClass}> info = new PageInfo<>(list);
+        return info;
+    }
+
+    public ${modelClass} getById(${primaryKeyType} id) {
+        ${modelClass}Example ${modelName}Example = new ${modelClass}Example();
+        ${modelClass}Example.Criteria criteria = ${modelName}Example.createCriteria();
+        criteria.and${primaryKeyProperty}EqualTo(id);
+        List<${modelClass}> list = ${modelName}Mapper.selectByExample(${modelName}Example);
+        if(CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
+    public int deleteById(${primaryKeyType} id) {
+        ${modelClass}Example ${modelName}Example = new ${modelClass}Example();
+        ${modelClass}Example.Criteria criteria = ${modelName}Example.createCriteria();
+        criteria.and${primaryKeyProperty}EqualTo(id);
+        return deleteByExample(${modelName}Example);
+    }
+
+    @Override
+    @Transactional
+    public int deleteByExample(${modelClass}Example example) {
+        return ${modelName}Mapper.deleteByExample(example);
+    }
+
+
+    @Override
+    public int updateSelectiveById(${modelClass} model,${primaryKeyType} id) {
+        ${modelClass}Example ${modelName}Example = new ${modelClass}Example();
+        ${modelClass}Example.Criteria criteria = ${modelName}Example.createCriteria();
+        criteria.and${primaryKeyProperty}EqualTo(id);
+        return updateSelectiveByExample(model,${modelName}Example);
+    }
+
+    @Override
+    @Transactional
+    public int updateSelectiveByExample(${modelClass} model, ${modelClass}Example example){
+        return ${modelName}Mapper.updateByExampleSelective(model,example);
+    }
+}

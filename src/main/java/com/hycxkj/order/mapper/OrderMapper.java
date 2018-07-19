@@ -1,0 +1,25 @@
+package com.hycxkj.order.mapper;
+
+import com.hycxkj.order.bean.Order;
+import com.hycxkj.order.bean.OrderExample;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+public interface OrderMapper {
+    long countByExample(OrderExample example);
+
+    int deleteByExample(OrderExample example);
+
+    int insert(Order record);
+
+    int insertSelective(Order record);
+
+    List<Order> selectByExample(OrderExample example);
+
+    int updateByExampleSelective(@Param("record") Order record, @Param("example") OrderExample example);
+
+    int updateByExample(@Param("record") Order record, @Param("example") OrderExample example);
+
+    int insertByBatch(List<Order> list);
+}

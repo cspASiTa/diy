@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 文件输出格式 -->
+    <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+    <!-- dev 文件路径 -->
+    <property name="DEV_FILE_PATH" value="G:/logs/" />
+    <!-- pro文件路径 -->
+    <property name="PRO_FILE_PATH" value="/var/diy-server/logs/" />
+
+    <property name="MONGO_DB_NAME" value="diy"/>
+
+    <!-- 添加用户喜好作品的记录-->
+    <property name="MONGO_DB_USER_LIKE_COLLECTION_NAME" value="userLikeLog"/>
+
+    <!-- 添加用户浏览作品的记录 -->
+    <property name="MONGO_DB_USER_VIEW_LOG" value="userViewLog"/>
+    <!-- 开发环境 -->
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+
+        <appender name="DEV_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>info</level>
+            </filter>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${DEV_FILE_PATH}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <MaxHistory>100</MaxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 64 MB -->
+                    <maxFileSize>64 MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+
+        <appender name="MONGO" class="com.hycxkj.production.log.MongoDBAppender">
+            <host>localhost</host>
+            <port>27017</port>
+            <dbName>${MONGO_DB_NAME}</dbName>
+            <userLikeLog>${MONGO_DB_USER_LIKE_COLLECTION_NAME}</userLikeLog>
+            <userViewLog>${MONGO_DB_USER_VIEW_LOG}</userViewLog>
+        </appender>
+
+        <logger name="MONGO" level="info" additivity="false">
+            <appender-ref ref="MONGO" />
+        </logger>
+
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="DEV_FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- 生产环境 -->
+    <springProfile name="prod">
+        <appender name="PROD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>info</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${PRO_FILE_PATH}/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <MaxHistory>100</MaxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- or whenever the file size reaches 64 MB -->
+                    <maxFileSize>64 MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+        <appender name="MONGO" class="com.hycxkj.production.log.MongoDBAppender">
+            <host>101.132.71.33</host>
+            <port>27017</port>
+            <username>diy-root</username>
+            <password>a792966514</password>
+            <dbName>${MONGO_DB_NAME}</dbName>
+            <userLikeLog>${MONGO_DB_USER_LIKE_COLLECTION_NAME}</userLikeLog>
+            <userViewLog>${MONGO_DB_USER_VIEW_LOG}</userViewLog>
+        </appender>
+
+        <logger name="MONGO" level="info" additivity="false">
+            <appender-ref ref="MONGO" />
+        </logger>
+
+        <root level="info">
+            <appender-ref ref="PROD_FILE" />
+        </root>
+    </springProfile>
+</configuration>

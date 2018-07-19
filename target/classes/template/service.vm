@@ -1,0 +1,36 @@
+package ${packageName}.${module}.service;
+
+import com.github.pagehelper.PageInfo;
+import ${packageName}.${module}.bean.${modelClass};
+import ${packageName}.${module}.bean.${modelClass}Example;
+import java.util.List;
+
+/**
+* @author 陈少平
+* @description
+* @create in ${createTime}
+*/
+public interface ${modelClass}Service {
+
+    int insert(${modelClass} model);
+
+    /**
+     * 只插入部分
+     */
+    int insertSelective(${modelClass} model);
+
+    PageInfo<${modelClass}> getByPage(Integer pageNum, Integer pageSize);
+
+    PageInfo<${modelClass}> getPagesByExample(Integer pageNum, Integer pageSize, ${modelClass}Example example);
+
+    ${modelClass} getById(${primaryKeyType} id);
+
+    int deleteById(${primaryKeyType} id);
+
+    int deleteByExample(${modelClass}Example example);
+
+    int updateSelectiveById(${modelClass} model,${primaryKeyType} id);
+
+    int updateSelectiveByExample(${modelClass} model, ${modelClass}Example example);
+
+}

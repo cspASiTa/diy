@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hycxkj.websocket.mapper.ChatLogMapper">
+  <resultMap id="BaseResultMap" type="com.hycxkj.websocket.bean.ChatLog">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="sendId" jdbcType="BIGINT" property="sendid" />
+    <result column="receiveId" jdbcType="BIGINT" property="receiveid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="sendTime" jdbcType="TIMESTAMP" property="sendtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, sendId, receiveId, content, sendTime
+  </sql>
+  <select id="selectByExample" parameterType="com.hycxkj.websocket.bean.ChatLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ws_chat_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.hycxkj.websocket.bean.ChatLogExample">
+    delete from ws_chat_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hycxkj.websocket.bean.ChatLog">
+    insert into ws_chat_log (id, sendId, receiveId, 
+      content, sendTime)
+    values (#{id,jdbcType=BIGINT}, #{sendid,jdbcType=BIGINT}, #{receiveid,jdbcType=BIGINT}, 
+      #{content,jdbcType=VARCHAR}, #{sendtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hycxkj.websocket.bean.ChatLog">
+    insert into ws_chat_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sendid != null">
+        sendId,
+      </if>
+      <if test="receiveid != null">
+        receiveId,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="sendtime != null">
+        sendTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sendid != null">
+        #{sendid,jdbcType=BIGINT},
+      </if>
+      <if test="receiveid != null">
+        #{receiveid,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null">
+        #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hycxkj.websocket.bean.ChatLogExample" resultType="java.lang.Long">
+    select count(*) from ws_chat_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ws_chat_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.sendid != null">
+        sendId = #{record.sendid,jdbcType=BIGINT},
+      </if>
+      <if test="record.receiveid != null">
+        receiveId = #{record.receiveid,jdbcType=BIGINT},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendtime != null">
+        sendTime = #{record.sendtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ws_chat_log
+    set id = #{record.id,jdbcType=BIGINT},
+      sendId = #{record.sendid,jdbcType=BIGINT},
+      receiveId = #{record.receiveid,jdbcType=BIGINT},
+      content = #{record.content,jdbcType=VARCHAR},
+      sendTime = #{record.sendtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

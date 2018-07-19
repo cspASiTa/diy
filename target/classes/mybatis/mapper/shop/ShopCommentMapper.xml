@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hycxkj.shop.mapper.ShopCommentMapper">
+  <resultMap id="BaseResultMap" type="com.hycxkj.shop.bean.ShopComment">
+    <result column="shop_comment_id" jdbcType="BIGINT" property="shopCommentId" />
+    <result column="shop_item_id" jdbcType="BIGINT" property="shopItemId" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime" />
+    <result column="rating_value" jdbcType="TINYINT" property="ratingValue" />
+    <result column="rating_person_name" jdbcType="VARCHAR" property="ratingPersonName" />
+    <result column="rating_person_avatar" jdbcType="VARCHAR" property="ratingPersonAvatar" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    shop_comment_id, shop_item_id, comment, comment_time, rating_value, rating_person_name,
+    rating_person_avatar
+  </sql>
+  <select id="selectByExample" parameterType="com.hycxkj.shop.bean.ShopCommentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.hycxkj.shop.bean.ShopCommentExample">
+    delete from shop_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hycxkj.shop.bean.ShopComment">
+    <selectKey keyProperty="shopCommentId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shop_comment (shop_item_id, comment, comment_time,
+      rating_value, rating_person_name, rating_person_avatar
+      )
+    values (#{shopItemId,jdbcType=BIGINT}, #{comment,jdbcType=VARCHAR}, #{commentTime,jdbcType=TIMESTAMP},
+      #{ratingValue,jdbcType=TINYINT}, #{ratingPersonName,jdbcType=VARCHAR}, #{ratingPersonAvatar,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hycxkj.shop.bean.ShopComment">
+    <selectKey keyProperty="shopCommentId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shop_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopItemId != null">
+        shop_item_id,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="commentTime != null">
+        comment_time,
+      </if>
+      <if test="ratingValue != null">
+        rating_value,
+      </if>
+      <if test="ratingPersonName != null">
+        rating_person_name,
+      </if>
+      <if test="ratingPersonAvatar != null">
+        rating_person_avatar,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopItemId != null">
+        #{shopItemId,jdbcType=BIGINT},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commentTime != null">
+        #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ratingValue != null">
+        #{ratingValue,jdbcType=TINYINT},
+      </if>
+      <if test="ratingPersonName != null">
+        #{ratingPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingPersonAvatar != null">
+        #{ratingPersonAvatar,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hycxkj.shop.bean.ShopCommentExample" resultType="java.lang.Long">
+    select count(*) from shop_comment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shop_comment
+    <set>
+      <if test="record.shopCommentId != null">
+        shop_comment_id = #{record.shopCommentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopItemId != null">
+        shop_item_id = #{record.shopItemId,jdbcType=BIGINT},
+      </if>
+      <if test="record.comment != null">
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentTime != null">
+        comment_time = #{record.commentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ratingValue != null">
+        rating_value = #{record.ratingValue,jdbcType=TINYINT},
+      </if>
+      <if test="record.ratingPersonName != null">
+        rating_person_name = #{record.ratingPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ratingPersonAvatar != null">
+        rating_person_avatar = #{record.ratingPersonAvatar,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shop_comment
+    set shop_comment_id = #{record.shopCommentId,jdbcType=BIGINT},
+      shop_item_id = #{record.shopItemId,jdbcType=BIGINT},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      comment_time = #{record.commentTime,jdbcType=TIMESTAMP},
+      rating_value = #{record.ratingValue,jdbcType=TINYINT},
+      rating_person_name = #{record.ratingPersonName,jdbcType=VARCHAR},
+      rating_person_avatar = #{record.ratingPersonAvatar,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

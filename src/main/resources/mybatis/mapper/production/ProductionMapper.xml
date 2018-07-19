@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hycxkj.production.mapper.ProductionMapper">
+  <resultMap id="BaseResultMap" type="com.hycxkj.production.bean.Production">
+    <result column="pro_id" jdbcType="BIGINT" property="proId" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="allow_comments" jdbcType="TINYINT" property="allowComments" />
+    <result column="like_count" jdbcType="INTEGER" property="likeCount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="sort_order" jdbcType="BIGINT" property="sortOrder" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="readnumber" jdbcType="INTEGER" property="readnumber" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="material" jdbcType="VARCHAR" property="material" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.hycxkj.production.bean.Production">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    pro_id, u_id, category_id, title, image, type, allow_comments, like_count, status,
+    sort_order, upload_time, update_time, readnumber, description, material
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.hycxkj.production.bean.ProductionExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from production
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.hycxkj.production.bean.ProductionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from production
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.hycxkj.production.bean.ProductionExample">
+    delete from production
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hycxkj.production.bean.Production">
+    <selectKey keyProperty="proId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into production (u_id, category_id, title,
+      image, type, allow_comments,
+      like_count, status, sort_order,
+      upload_time, update_time, readnumber,
+      description, material, content
+      )
+    values (#{uId,jdbcType=BIGINT}, #{categoryId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
+      #{image,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{allowComments,jdbcType=TINYINT},
+      #{likeCount,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{sortOrder,jdbcType=BIGINT},
+      #{uploadTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{readnumber,jdbcType=INTEGER},
+      #{description,jdbcType=VARCHAR}, #{material,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hycxkj.production.bean.Production">
+    <selectKey keyProperty="proId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into production
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="allowComments != null">
+        allow_comments,
+      </if>
+      <if test="likeCount != null">
+        like_count,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="sortOrder != null">
+        sort_order,
+      </if>
+      <if test="uploadTime != null">
+        upload_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="readnumber != null">
+        readnumber,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="material != null">
+        material,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uId != null">
+        #{uId,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="allowComments != null">
+        #{allowComments,jdbcType=TINYINT},
+      </if>
+      <if test="likeCount != null">
+        #{likeCount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=BIGINT},
+      </if>
+      <if test="uploadTime != null">
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="readnumber != null">
+        #{readnumber,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="material != null">
+        #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hycxkj.production.bean.ProductionExample" resultType="java.lang.Long">
+    select count(*) from production
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update production
+    <set>
+      <if test="record.proId != null">
+        pro_id = #{record.proId,jdbcType=BIGINT},
+      </if>
+      <if test="record.uId != null">
+        u_id = #{record.uId,jdbcType=BIGINT},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.allowComments != null">
+        allow_comments = #{record.allowComments,jdbcType=TINYINT},
+      </if>
+      <if test="record.likeCount != null">
+        like_count = #{record.likeCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sortOrder != null">
+        sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      </if>
+      <if test="record.uploadTime != null">
+        upload_time = #{record.uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.readnumber != null">
+        readnumber = #{record.readnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.material != null">
+        material = #{record.material,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update production
+    set pro_id = #{record.proId,jdbcType=BIGINT},
+      u_id = #{record.uId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      allow_comments = #{record.allowComments,jdbcType=TINYINT},
+      like_count = #{record.likeCount,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=TINYINT},
+      sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      upload_time = #{record.uploadTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      readnumber = #{record.readnumber,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      material = #{record.material,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update production
+    set pro_id = #{record.proId,jdbcType=BIGINT},
+      u_id = #{record.uId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      allow_comments = #{record.allowComments,jdbcType=TINYINT},
+      like_count = #{record.likeCount,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=TINYINT},
+      sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      upload_time = #{record.uploadTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      readnumber = #{record.readnumber,jdbcType=INTEGER},
+      description = #{record.description,jdbcType=VARCHAR},
+      material = #{record.material,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+
+  <!--  =========================================================================================  -->
+
+  <sql id="baseFontColumnList">
+    pro_id, title , image ,like_count ,allow_comments, readnumber ,user_id, user_nick,avatar
+  </sql>
+
+  <sql id="userLikeFontColumnList">
+    <include refid="baseFontColumnList"/> , category_id
+  </sql>
+
+  <select id="getProductionSimpleInfo" resultType="com.hycxkj.production.font.FontSimpleProduction">
+    SELECT <include refid="baseFontColumnList"/> FROM production, user_user WHERE production.u_id = user_user.user_id AND production.status = 1 ORDER BY readnumber DESC
+  </select>
+
+  <select id="getProductionSimpleInfoByCateogryId" resultType="com.hycxkj.production.font.FontSimpleProduction">
+     SELECT <include refid="baseFontColumnList"/> FROM production, user_user WHERE production.u_id = user_user.user_id AND category_id = #{categoryId} AND production.status = 1 ORDER BY readnumber DESC
+  </select>
+
+  <select id="getProductionSimpleInfoByUserId" resultType="com.hycxkj.production.font.FontSimpleProduction">
+    SELECT <include refid="baseFontColumnList"/> FROM production, user_user WHERE production.u_id = #{userId} ORDER BY production.upload_time DESC
+  </select>
+
+  <select id="getUserLikeProductions" resultType="com.hycxkj.production.font.FontSimpleProduction">
+    <bind name="keyword" value="'%'+keyword+'%'"/>
+    SELECT <include refid="userLikeFontColumnList"/>  FROM production, user_user WHERE production.u_id = user_user.user_id AND category_id = #{categoryId} AND title LIKE #{keyword} ORDER BY upload_time DESC
+  </select>
+
+  <select id="getUserLikeProductionsByCategory" resultType="com.hycxkj.production.font.FontSimpleProduction">
+    SELECT <include refid="userLikeFontColumnList"/> FROM production, user_user WHERE production.u_id = user_user.user_id AND category_id = #{categoryId} ORDER BY upload_time DESC
+  </select>
+
+  <select id="getSimpleProductionByProId" resultType="com.hycxkj.production.font.FontSimpleProduction">
+    SELECT <include refid="baseFontColumnList"/> FROM production, user_user WHERE production.u_id = user_user.user_id AND pro_id = #{proId}
+  </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

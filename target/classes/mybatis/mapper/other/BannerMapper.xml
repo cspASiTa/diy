@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hycxkj.other.mapper.BannerMapper">
+  <resultMap id="BaseResultMap" type="com.hycxkj.other.bean.Banner">
+    <result column="banner_id" jdbcType="INTEGER" property="bannerId" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="alt" jdbcType="VARCHAR" property="alt" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="sort_order" jdbcType="BIGINT" property="sortOrder" />
+    <result column="link" jdbcType="VARCHAR" property="link" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    banner_id, image, alt, status, sort_order, link, create_time, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.hycxkj.other.bean.BannerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from common_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.hycxkj.other.bean.BannerExample">
+    delete from common_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hycxkj.other.bean.Banner">
+    <selectKey keyProperty="bannerId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into common_banner (image, alt, status,
+      sort_order, link, create_time,
+      update_time)
+    values (#{image,jdbcType=VARCHAR}, #{alt,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{sortOrder,jdbcType=BIGINT}, #{link,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hycxkj.other.bean.Banner">
+    <selectKey keyProperty="bannerId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into common_banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="image != null">
+        image,
+      </if>
+      <if test="alt != null">
+        alt,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="sortOrder != null">
+        sort_order,
+      </if>
+      <if test="link != null">
+        link,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="alt != null">
+        #{alt,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=BIGINT},
+      </if>
+      <if test="link != null">
+        #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hycxkj.other.bean.BannerExample" resultType="java.lang.Long">
+    select count(*) from common_banner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update common_banner
+    <set>
+      <if test="record.bannerId != null">
+        banner_id = #{record.bannerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alt != null">
+        alt = #{record.alt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sortOrder != null">
+        sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      </if>
+      <if test="record.link != null">
+        link = #{record.link,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update common_banner
+    set banner_id = #{record.bannerId,jdbcType=INTEGER},
+      image = #{record.image,jdbcType=VARCHAR},
+      alt = #{record.alt,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      link = #{record.link,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <select id="getBannersToFont" resultMap="BaseResultMap">
+    SELECT banner_id, image, alt, link FROM common_banner WHERE status = 1 ORDER BY sort_order DESC
+  </select>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>

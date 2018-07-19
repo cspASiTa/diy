@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hycxkj.shop.mapper.ShopItemMapper">
+  <resultMap id="BaseResultMap" type="com.hycxkj.shop.bean.ShopItem">
+    <result column="item_id" jdbcType="BIGINT" property="itemId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="price" jdbcType="BIGINT" property="price" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="weight" jdbcType="BIGINT" property="weight" />
+    <result column="sall_point" jdbcType="VARCHAR" property="sallPoint" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="shop_desc" jdbcType="VARCHAR" property="shopDesc" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="sort_order" jdbcType="BIGINT" property="sortOrder" />
+    <result column="discount_price" jdbcType="BIGINT" property="discountPrice" />
+    <result column="shop_busi_id" jdbcType="BIGINT" property="shopBusiId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="rating_value" jdbcType="TINYINT" property="ratingValue" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    item_id, category_id, num, price, title, status, weight, sall_point, image, shop_desc,
+    create_time, update_time, sort_order, discount_price, shop_busi_id, type, rating_value
+  </sql>
+  <select id="selectByExample" parameterType="com.hycxkj.shop.bean.ShopItemExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.hycxkj.shop.bean.ShopItemExample">
+    delete from shop_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hycxkj.shop.bean.ShopItem">
+    <selectKey keyProperty="itemId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shop_item (category_id, num, price,
+      title, status, weight,
+      sall_point, image, shop_desc,
+      create_time, update_time, sort_order,
+      discount_price, shop_busi_id, type,
+      rating_value)
+    values (#{categoryId,jdbcType=INTEGER}, #{num,jdbcType=INTEGER}, #{price,jdbcType=BIGINT},
+      #{title,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{weight,jdbcType=BIGINT},
+      #{sallPoint,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{shopDesc,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sortOrder,jdbcType=BIGINT},
+      #{discountPrice,jdbcType=BIGINT}, #{shopBusiId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT},
+      #{ratingValue,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hycxkj.shop.bean.ShopItem">
+    <selectKey keyProperty="itemId" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shop_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="sallPoint != null">
+        sall_point,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="shopDesc != null">
+        shop_desc,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="sortOrder != null">
+        sort_order,
+      </if>
+      <if test="discountPrice != null">
+        discount_price,
+      </if>
+      <if test="shopBusiId != null">
+        shop_busi_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="ratingValue != null">
+        rating_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=BIGINT},
+      </if>
+      <if test="sallPoint != null">
+        #{sallPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="shopDesc != null">
+        #{shopDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=BIGINT},
+      </if>
+      <if test="discountPrice != null">
+        #{discountPrice,jdbcType=BIGINT},
+      </if>
+      <if test="shopBusiId != null">
+        #{shopBusiId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="ratingValue != null">
+        #{ratingValue,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hycxkj.shop.bean.ShopItemExample" resultType="java.lang.Long">
+    select count(*) from shop_item
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shop_item
+    <set>
+      <if test="record.itemId != null">
+        item_id = #{record.itemId,jdbcType=BIGINT},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.num != null">
+        num = #{record.num,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.weight != null">
+        weight = #{record.weight,jdbcType=BIGINT},
+      </if>
+      <if test="record.sallPoint != null">
+        sall_point = #{record.sallPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopDesc != null">
+        shop_desc = #{record.shopDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sortOrder != null">
+        sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      </if>
+      <if test="record.discountPrice != null">
+        discount_price = #{record.discountPrice,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopBusiId != null">
+        shop_busi_id = #{record.shopBusiId,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.ratingValue != null">
+        rating_value = #{record.ratingValue,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shop_item
+    set item_id = #{record.itemId,jdbcType=BIGINT},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      num = #{record.num,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      weight = #{record.weight,jdbcType=BIGINT},
+      sall_point = #{record.sallPoint,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      shop_desc = #{record.shopDesc,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      sort_order = #{record.sortOrder,jdbcType=BIGINT},
+      discount_price = #{record.discountPrice,jdbcType=BIGINT},
+      shop_busi_id = #{record.shopBusiId,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=TINYINT},
+      rating_value = #{record.ratingValue,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+  <!-- ####################################################################################### -->
+  <select id="testUse" resultType="com.hycxkj.shop.bean.ShopBusiItem">
+    SELECT shop_busi_id, item_id as shop_item_id FROM shop_item
+  </select>
+
+  <select id="getSingleItemRecommend" resultType="com.hycxkj.shop.font.FontSimpleShopItem" >
+    SELECT shop_item.item_id, shop_item.image, shop_busi_id, shop_name FROM shop_business, shop_item WHERE shop_business.busi_id = shop_item.shop_busi_id AND type = #{type} ORDER BY shop_item.rating_value DESC
+  </select>
+
+  <select id="getFreshRecommend" resultType="com.hycxkj.shop.font.FontSimpleShopItem" >
+    SELECT shop_item.item_id, shop_item.image, shop_busi_id, shop_name FROM shop_business, shop_item WHERE shop_business.busi_id = shop_item.shop_busi_id AND type = #{type} ORDER BY shop_item.create_time DESC, shop_item.rating_value DESC
+  </select>
+
+  <!--<select id="getShopItemDetailById" resultType="com.hycxkj.shop.font.FontShopItemDetail">-->
+    <!--SELECT <include refid="Base_Column_List"/> , shop_comment_id, comment, comment_time, rating_value, rating_person_name,-->
+    <!--rating_person_avatar FROM shop_item, shop_comment WHERE  shop_item.item_id = #{itemId} AND shop_item.item_id = shop_comment.shop_item_id-->
+  <!--</select>-->
+
+  <cache type="org.mybatis.caches.ehcache.LoggingEhcache" />
+</mapper>
